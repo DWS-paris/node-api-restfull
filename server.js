@@ -75,7 +75,7 @@ class ServerClass{
                                 method: req.method,
                                 message: `Request succeed`,
                                 err: null,
-                                data: mongooseSuccess,
+                                data: decryptData(mongooseSuccess, `headline`, `abstract`),
                                 status: 200
                             });
                         })
@@ -97,10 +97,70 @@ class ServerClass{
         CRUD: Read item
         */  
             // All items
-            this.server.get('/item', (req, res) => {});
+            this.server.get('/item', (req, res) => {
+                // Read items from Mongoose model
+                Model.find()
+                .exec( ( mongooseError, mongooseSuccess ) => {
+                    if( mongooseError ){ 
+                        // Send error request
+                        return res.status(500).json({
+                            endpoint: req.originalUrl,
+                            method: req.method,
+                            message: `Request failed`,
+                            err: mongooseError,
+                            data: null,
+                            status: 500
+                        });
+                    }
+                    else{ 
+                        // Decrype item data
+                        let mongooseDecryped = [];
+                        for( let item of mongooseSuccess ){
+                            mongooseDecryped.push(decryptData(item, `headline`, `abstract`))
+                        }
+
+                        // Send success request
+                        return res.status(200).json({
+                            endpoint: req.originalUrl,
+                            method: req.method,
+                            message: `Request succeed`,
+                            err: null,
+                            data: mongooseDecryped,
+                            status: 200
+                        });
+                    }
+                })
+            });
 
             // Item by ID
-            this.server.get('/item/:id', (req, res) => {});
+            this.server.get('/item/:id', (req, res) => {
+                // Read items from Mongoose model
+                Model.findById(req.params.id)
+                .exec( ( mongooseError, mongooseSuccess ) => {
+                    if( mongooseError ){ 
+                        // Send error request
+                        return res.status(500).json({
+                            endpoint: req.originalUrl,
+                            method: req.method,
+                            message: `Request failed`,
+                            err: mongooseError,
+                            data: null,
+                            status: 500
+                        });
+                    }
+                    else{
+                        // Send success request
+                        return res.status(200).json({
+                            endpoint: req.originalUrl,
+                            method: req.method,
+                            message: `Request succeed`,
+                            err: null,
+                            data: decryptData(mongooseSuccess, `headline`, `abstract`),
+                            status: 200
+                        });
+                    }
+                })
+            });
         //
 
         /* 
@@ -119,14 +179,75 @@ class ServerClass{
                         status: 500
                     });
                 }
-                else{}
+                else{
+                    // Read items from Mongoose model
+                    Model.findById(req.params.id)
+                    .exec( async ( mongooseError, mongooseSuccess ) => {
+                        if( mongooseError ){ 
+                            // Send error request
+                            return res.status(500).json({
+                                endpoint: req.originalUrl,
+                                method: req.method,
+                                message: `Request failed`,
+                                err: mongooseError,
+                                data: null,
+                                status: 500
+                            });
+                        }
+                        else{
+                            // Update mongoose object
+                            mongooseSuccess.headline = cryptData(req.body.headline);
+                            mongooseSuccess.abstract = cryptData(req.body.abstract);
+
+                            // Save modification
+                            await mongooseSuccess.save();
+
+                            // Send success request
+                            return res.status(200).json({
+                                endpoint: req.originalUrl,
+                                method: req.method,
+                                message: `Request succeed`,
+                                err: null,
+                                data: decryptData(mongooseSuccess, `headline`, `abstract`),
+                                status: 200
+                            });
+                        }
+                    })
+                }
             });
         //
 
         /* 
         CRUD: Delete item
         */
-            this.server.delete('/item/:id', (req, res) => {});
+            this.server.delete('/item/:id', (req, res) => {
+                // Delete items from Mongoose model
+                Model.deleteOne({ _id: req.params.id })
+                .exec( async ( mongooseError, mongooseSuccess ) => {
+                    if( mongooseError ){ 
+                        // Send error request
+                        return res.status(500).json({
+                            endpoint: req.originalUrl,
+                            method: req.method,
+                            message: `Request failed`,
+                            err: mongooseError,
+                            data: null,
+                            status: 500
+                        });
+                    }
+                    else{
+                        // Send success request
+                        return res.status(200).json({
+                            endpoint: req.originalUrl,
+                            method: req.method,
+                            message: `Request succeed`,
+                            err: null,
+                            data: mongooseSuccess,
+                            status: 200
+                        });
+                    }
+                })
+            });
         //
 
         //=> Launch server
