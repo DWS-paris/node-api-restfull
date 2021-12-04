@@ -25,6 +25,8 @@ L'objectif de ce répertoire est de mettre en place une structure de base pour u
 - Chiffrement et dé-chiffrement des informations stockées
 - Configuration d'un CRUD complet
 
+Une documentation [Postman](https://learning.postman.com) a été créée pour cette API, vous pouvez y accéder avec le lien suivant : https://documenter.getpostman.com/view/1383513/UVJhCuaL
+
 <br>
 
 ### Aller plus loin avec ce répertoire
@@ -54,6 +56,8 @@ Une fois que votre machine est configurée vous devez installer les dépendances
 ```bash
 npm i
 ```
+
+<br>
 
 Cette API utilise des variables d'environnement, il s'agit d'une des bonnes pratiques de base à observer lorsque l'on travail sur des logiques serveurs : cacher certaines information. Pour ce faire, l'API utilise le module [Dotenv](https://www.npmjs.com/package/dotenv) qui charge un fichier nommée `.env` au changement de l'API. Vous devez donc créer ce fichier en vous basant sur le fichier `.env.dist` : 
 
@@ -106,7 +110,6 @@ npm run start
 
 ### Learn at least one new thing every day 
 
-- **Documentation sur L'API** https://documenter.getpostman.com/view/1383513/UVJhCuaL
 - **Développer une API REST en NodeJS** https://dwsapp.io/tuto/HkLpPSPVd
 - **Configurer un serveur NGINX** https://dwsapp.io/tuto/BJswWiONu
 - **Minio Multi-Cloud Object Storage** https://dwsapp.io/tuto/SJjk_SDVO
