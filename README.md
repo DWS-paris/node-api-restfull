@@ -69,7 +69,7 @@ npm run serve
 
 <br>
 
-### Support de cours 
+### Learn at least one new thing every day 
 
 - **Développer une API REST en NodeJS** https://dwsapp.io/tuto/HkLpPSPVd
 - **Configurer un serveur NGINX** https://dwsapp.io/tuto/BJswWiONu
