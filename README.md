@@ -1,4 +1,4 @@
-# Node API RESTfuul
+# Node API RESTfull
 
 *Interface de programmation pour applications Javascript*
 
@@ -49,28 +49,64 @@ Avant toutes choses, comme pour tous les projets NodeJS, vous devez l'avoir inst
 
 <br>
 
-Une fois que votre machine est configurée avec [Vue CLI](https://cli.vuejs.org), vous devez installer les dépendances avec la commande `npm i` qui se charge de construire le dossier `node_modules` contenant les modules de l'application.
-
-Cette application utilise la plateforme [hackmd.io](https://hackmd.io) pour stocker les fichiers markdown dont l'URL est inscrite dans un fichier de configuration. Le fichier `.env.dist` présente le modèle à utiliser pour créer votre fichier d'environnement, vous devez donc le dupliquer pour créer un fichier `.env` dont le contenu sera : 
+Une fois que votre machine est configurée vous devez installer les dépendances pour construire le dossier `node_modules` contenant les modules de l'application :
 
 ```bash
-VUE_APP_MK_ORIGIN=<URL-HACKMD>
+npm i
 ```
 
-> Vous pouvez utiliser un autre système mais vous devrez adapter votre variable d'environnement.
+Cette API utilise des variables d'environnement, il s'agit d'une des bonnes pratiques de base à observer lorsque l'on travail sur des logiques serveurs : cacher certaines information. Pour ce faire, l'API utilise le module [Dotenv](https://www.npmjs.com/package/dotenv) qui charge un fichier nommée `.env` au changement de l'API. Vous devez donc créer ce fichier en vous basant sur le fichier `.env.dist` : 
+
+```bash
+# Serveur
+PORT=<IP>
+MONGO_URL=<MONGO-ORIGIN-FOLDER>
+
+# CRYPTO
+CRYPTO_KEY=<KEY>
+```
 
 <br>
 
-Votre dossier local ainsi configuré, vous pouvez lancer l'application avec la commande :
+Pour pouvoir définir l'URI d'origine de votre serveur de base de données [MongoDB](https://www.mongodb.com), vous devez au préalable l'avoir installer sur votre machine. Vous devez vous rendre sur le site officiel de [MongoDB](https://www.mongodb.com) pour séléectionner la version qui correspond à vos besoins et à votre système d'exploitation.
+
+Une fois [MongoDB](https://www.mongodb.com) installé, vous aurez probablement besoin de modifier le script présent dans le fichier `package.json` selon votre configuration : 
+
+```json
+
+"scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "mongo": "sudo mongod --dbpath /MONGO_db",
+    "start": "nodemon server.js"
+},
+...
+```
+
+> Ce script a été prévu pour une machine qui stocke les document dans un dossier `MONGO_db` à la racine de la machine.
+
+<br>
+
+Lorsque votre environnement de développement est prêt, vous devez dans un premier temps lancer votre serveur de base de données [MongoDB](https://www.mongodb.com) en tapant la commande suivante :
 
 ```bash
-npm run serve
+npm run mongo
 ```
+
+<br>
+
+Une fois le serveur de base de données actif, il ne vous reste plus qu'à lancer votre API avec la commande suivante :
+
+```bash
+npm run start
+```
+
+> Le script `start` utilise `nodemon` que vous devez au préalable installer en global sur votre machine.
 
 <br>
 
 ### Learn at least one new thing every day 
 
+- **Documentation sur L'API** https://documenter.getpostman.com/view/1383513/UVJhCuaL
 - **Développer une API REST en NodeJS** https://dwsapp.io/tuto/HkLpPSPVd
 - **Configurer un serveur NGINX** https://dwsapp.io/tuto/BJswWiONu
 - **Minio Multi-Cloud Object Storage** https://dwsapp.io/tuto/SJjk_SDVO
